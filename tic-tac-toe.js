@@ -33,6 +33,7 @@ let counter = 0;
 const wincolor = "#6a89cc";
 
 
+
 for (let i = 0; i < 9; i++) {
 	
 		let cell = document.createElement('div');
@@ -44,6 +45,13 @@ for (let i = 0; i < 9; i++) {
 		cells.push(cell);
 	};
 	
+
+	
+					
+					
+								
+
+	
 [...cells].forEach(cell => {
 			
 				cell.onmousedown = () => {
@@ -51,9 +59,7 @@ for (let i = 0; i < 9; i++) {
 					if (!cell.flag) {		
 					
 							counter++;
-							nextPlayerField.innerHTML = "NEXT MOVE";
-							
-							
+														
 							 if(counter % 2 !== 0) {
 								 
 								if (!cell.flag){
@@ -62,59 +68,85 @@ for (let i = 0; i < 9; i++) {
 									cell.flag = true;
 									cell.check =  "o";
 									mark.innerHTML = "<img src = 'files/x.png'>"
-									
+									nextPlayerField.innerHTML = "RANDOM MOVE";
 								};			
 								
 							 } 
 							 
-							 else { 
-								
-								if (!cell.flag){
-									
-									cell.innerHTML = "<img src = 'files/x.png'>";
-									cell.flag = true;
-									cell.check = "x";
-									mark.innerHTML = "<img src = 'files/o.png'>"
-									
-								};
-								
-							 } 
+							
+													 
+							 	
+						
+				
+					    
 	
-					}
-					
-					if (winCheck(cells)) {
-						[...cells].forEach(cell => {
+						if (winCheck()) {
+								[...cells].forEach(cell => {
+									
+									cell.flag = true;
+									mark.style.background = "red";
+									nextPlayerField.innerHTML = "THE WINNER";
+									reload();
+									
+									
+									if (counter % 2 !== 0) {
+										
+										mark.innerHTML = "<img src = 'files/o.png'>";
+										
+									} else {
+										
+										mark.innerHTML = "<img src = 'files/x.png'>";
+										
+										};
+								});
+							};
 							
-							cell.flag = true;
-							mark.style.background = "red";
-							nextPlayerField.innerHTML = "THE WINNER";
-							reload();
-							
-							
-							if (counter % 2 !== 0) {
-								
-								mark.innerHTML = "<img src = 'files/o.png'>";
-								
-							} else {
-								
-								mark.innerHTML = "<img src = 'files/x.png'>";
-								
-								};
-						});
-					};
+						counter++;	
 						
-						if (counter == 9 && !winCheck(cells)) {
-						mark.innerHTML = " ";	
-						nextPlayerField.innerHTML = "STANDOFF";	
-						[...cells].forEach(cell => cell.style.background = "silver");
-						reload();
-						};
-				}
-		
-		});
+						if (!winCheck() && counter < 10) setTimeout(randomcheck, 500);	
 						
+						console.log(counter);	
+				};	
+			};		
+	});							
+								
+								
+								
+						
+								
+						
+				
 
-let winCheck = (cells) => {
+
+
+let randomcheck = () => { 
+
+let flag = true;
+	
+	while (flag) {
+
+		let rcell = Math.floor(Math.random() * 9); 
+		
+				for (let i = 0; i < cells.length; i++) {
+					
+						if (cells[rcell].check == " ") {
+							
+							cells[rcell].innerHTML = "<img src = 'files/x.png'>";
+							cells[rcell].flag = true;
+							cells[rcell].check =  "x";
+							mark.innerHTML = "<img src = 'files/o.png'>"
+							nextPlayerField.innerHTML = "NEXT MOVE";
+							flag = false;
+							
+						};
+					
+				
+				};
+				
+		};
+};
+
+let winCheck = () => {
 	
 	for (let i = 0; i < cells.length; i++) {
 		
