@@ -80,4 +80,18 @@ body {
   
   
 		}
+
+.oo, .xx {
+		transition-duration:.7s;
+		transition-timing-function: ease-in-out;	
+}		
+
+.oo:hover, .xx:hover {
+		transform:scale(0.9, 0.9); 
+		} 
+
+	
+		
+
+	
 		

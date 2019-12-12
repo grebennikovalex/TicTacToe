@@ -3,36 +3,43 @@
   
 	'use strict'
 	
+	// creating the game board elements and addind initial properties for them
+	
+	// header
 let headbox = document.createElement('div');
 headbox.className = "header";
 document.body.append(headbox);
 
+	// field in the header for the next move display - text
 let nextPlayerField = document.createElement('div');
 nextPlayerField.className = "npfield";
 nextPlayerField.innerHTML = "START MOVE";
 headbox.append(nextPlayerField);
 
+	// field in the header for the next move display - signs O or X or empty
 let mark = document.createElement('div');
 mark.className = "mark";
-mark.innerHTML = "<img src = 'files/o.png'>";
+mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
 headbox.append(mark);
 
+	// hidden element for new game start
 let newgame = document.createElement('div');
 newgame.className = "newgame";
 newgame.innerHTML = "ONE MORE!"
 headbox.append(newgame);
 
-
+	// main container for the board
 let main = document.createElement('div');	
 document.body.append(main);
 main.className = "container";	
 
+// some variables and constants
 	
 let cells = [];
 let counter = 0;
-const wincolor = "#6a89cc";
+const wincolor = "#6a89cc"; // color for winner row
 
-
+// creating an array of cells with initial properties for each cell
 
 for (let i = 0; i < 9; i++) {
 	
@@ -50,7 +57,7 @@ for (let i = 0; i < 9; i++) {
 					
 					
 								
-
+// changing the state of clicked cell
 	
 [...cells].forEach(cell => {
 			
@@ -58,70 +65,93 @@ for (let i = 0; i < 9; i++) {
 					
 					if (!cell.flag) {		
 					
-							counter++;
-														
+							counter++; // odd number of move, O's move
+							console.log(counter);
+							
+							
+							// the O's move
+							
 							 if(counter % 2 !== 0) {
 								 
 								if (!cell.flag){
 									
-									cell.innerHTML = "<img src = 'files/o.png'>";
+									// placing the O in the corresponding cell
+									cell.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
+																		
+									// flagging it for not responding onclick
 									cell.flag = true;
+									
+									// changing the state to marked with O
 									cell.check =  "o";
-									mark.innerHTML = "<img src = 'files/x.png'>"
+									
+									// the next player is X									
+									mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
 									nextPlayerField.innerHTML = "RANDOM MOVE";
+									
 								};			
 								
 							 } 
-							 
+										
+						// checking the winner after the O's move
+						// and displaying the winner state of the game board if true
+						// by calling corresponding functions
+						if (winCheck()) winFill();
 							
-													 
-							 	
 						
-				
-					    
-	
-						if (winCheck()) {
-								[...cells].forEach(cell => {
-									
-									cell.flag = true;
-									mark.style.background = "red";
-									nextPlayerField.innerHTML = "THE WINNER";
-									reload();
-									
-									
-									if (counter % 2 !== 0) {
-										
-										mark.innerHTML = "<img src = 'files/o.png'>";
-										
-									} else {
-										
-										mark.innerHTML = "<img src = 'files/x.png'>";
-										
-										};
-								});
-							};
-							
-						counter++;	
+						// function call for the X's move with delay if O's didn't win 
+						if (!winCheck() && counter < 9)	setTimeout(randomcheck, 500)
+												
+						else winFill();
 						
-						if (!winCheck() && counter < 10) setTimeout(randomcheck, 500);	
 						
+						
+						counter++;	// even number of move, X's move
 						console.log(counter);	
 				};	
 			};		
 	});							
 								
-								
-								
-						
-								
-						
+// function for display the winner state of the game board					
+	
+let winFill = () =>	[...cells].forEach(cell => {
+									
+			cell.flag = true; // adding non-respond state for all the cells
+			mark.style.background = "red";
+			nextPlayerField.innerHTML = "THE WINNER";
+			reload(); // calling for the start new game function
 				
-
-
+			// checking which move caused the winner state
+									
+			if (counter % 2 !== 0) {
+										
+				mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
+										
+			} else {
+										
+				mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>";
+										
+					};
+					
+			// checking the standoff state and changing the game board 		
+										
+			if (counter == 9 && !winCheck()) {
+				mark.innerHTML = " ";	
+				nextPlayerField.innerHTML = "STANDOFF";	
+				[...cells].forEach(cell => cell.style.background = "silver");
+				reload();
+			};
+										
+										
+	});
+														
+	
+// random move by the X's
 
 let randomcheck = () => { 
 
 let flag = true;
+	
+	// iterating the array while the random number finds an empty cell
 	
 	while (flag) {
 
@@ -131,12 +161,13 @@ let flag = true;
 					
 						if (cells[rcell].check == " ") {
 							
-							cells[rcell].innerHTML = "<img src = 'files/x.png'>";
+							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
 							cells[rcell].flag = true;
 							cells[rcell].check =  "x";
-							mark.innerHTML = "<img src = 'files/o.png'>"
+							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
 							nextPlayerField.innerHTML = "NEXT MOVE";
 							flag = false;
+							if (winCheck()) winFill();
 							
 						};
 					
@@ -145,6 +176,8 @@ let flag = true;
 				
 		};
 };
+
+// checking who's won the game, changing the color of the winner's row
 
 let winCheck = () => {
 	
@@ -212,8 +245,11 @@ let winCheck = () => {
 	};	
 };
 
+// new game start
+
 let reload = () => {
 	nextPlayerField.onmouseover = () =>  newgame.style.display = "flex";
 	newgame.onmousedown = () =>	window.location.reload(false);
 	newgame.onmouseout = () =>  newgame.style.display = "none";
 	}
+	
