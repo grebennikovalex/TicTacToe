@@ -33,13 +33,14 @@ let main = document.createElement('div');
 document.body.append(main);
 main.className = "container";	
 
-// some variables and constants
-	
+
+	// some variables and constants
 let cells = [];
 let counter = 0;
 const wincolor = "#6a89cc"; // color for winner row
+let popsound = new sound("pop.mp3"); // popping sound
 
-// creating an array of cells with initial properties for each cell
+	// creating an array of cells with initial properties for each cell
 
 for (let i = 0; i < 9; i++) {
 	
@@ -47,6 +48,7 @@ for (let i = 0; i < 9; i++) {
 		cell.className = "box";
 		cell.innerHTML = " ";
 		cell.flag = false;
+		cell.delayflag = false;
 		cell.check = " ";
 		main.append(cell);
 		cells.push(cell);
@@ -57,13 +59,13 @@ for (let i = 0; i < 9; i++) {
 					
 					
 								
-// changing the state of clicked cell
+	// changing the state of clicked cell
 	
 [...cells].forEach(cell => {
 			
 				cell.onmousedown = () => {
 					
-					if (!cell.flag) {		
+					if (!cell.flag && !cell.delayflag) {		
 					
 							counter++; // odd number of move, O's move
 							console.log(counter);
@@ -73,12 +75,17 @@ for (let i = 0; i < 9; i++) {
 							
 							 if(counter % 2 !== 0) {
 								 
-								if (!cell.flag){
+									// checking the clicked cell for respond state
+								 
+								if (!cell.flag && !cell.delayflag){
 									
 									// placing the O in the corresponding cell
 									cell.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
+									
+									// playing sound
+									popsound.play();
 																		
-									// flagging it for not responding onclick
+									// flagging the cell for not responding onclick
 									cell.flag = true;
 									
 									// changing the state to marked with O
@@ -87,6 +94,7 @@ for (let i = 0; i < 9; i++) {
 									// the next player is X									
 									mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
 									nextPlayerField.innerHTML = "RANDOM MOVE";
+									cell.style.backgroundImage = "radial-gradient(#67cfe6, #a9e4f1)";	
 									
 								};			
 								
@@ -94,15 +102,18 @@ for (let i = 0; i < 9; i++) {
 										
 						// checking the winner after the O's move
 						// and displaying the winner state of the game board if true
-						// by calling corresponding functions
 						if (winCheck()) winFill();
 							
 						
 						// function call for the X's move with delay if O's didn't win 
-						if (!winCheck() && counter < 9)	setTimeout(randomcheck, 500)
-												
-						else winFill();
+						if (!winCheck() && counter < 9) {
+							setTimeout(randomcheck, 1000);
+							
+							// flagging all cells for not responding onckick while delay
+							[...cells].forEach(cell => cell.delayflag = true);
+						}
 						
+						else winFill();
 						
 						
 						counter++;	// even number of move, X's move
@@ -111,7 +122,7 @@ for (let i = 0; i < 9; i++) {
 			};		
 	});							
 								
-// function for display the winner state of the game board					
+	// function for display the winner state of the game board					
 	
 let winFill = () =>	[...cells].forEach(cell => {
 									
@@ -141,11 +152,10 @@ let winFill = () =>	[...cells].forEach(cell => {
 				reload();
 			};
 										
-										
 	});
 														
 	
-// random move by the X's
+	// random move by the X's
 
 let randomcheck = () => { 
 
@@ -161,29 +171,27 @@ let flag = true;
 					
 						if (cells[rcell].check == " ") {
 							
-							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
-							cells[rcell].flag = true;
-							cells[rcell].check =  "x";
-							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
-							nextPlayerField.innerHTML = "NEXT MOVE";
-							flag = false;
+							putX(rcell);
+							[...cells].forEach(cell => cell.delayflag = false);	
 							if (winCheck()) winFill();
-							
+							flag = false;
 						};
 					
 				
 				};
 				
 		};
+		
+	
 };
 
-// checking who's won the game, changing the color of the winner's row
+	// checking who's won the game, changing the color of the winner's row
 
 let winCheck = () => {
 	
 	for (let i = 0; i < cells.length; i++) {
 		
-		//checking rows
+	//checking rows
 	
 		if (cells[0].check == cells[1].check && cells[1].check == cells[2].check && cells[2].check != " ") {
 				cells[0].style.background = wincolor;
@@ -245,7 +253,7 @@ let winCheck = () => {
 	};	
 };
 
-// new game start
+	// new game start
 
 let reload = () => {
 	nextPlayerField.onmouseover = () =>  newgame.style.display = "flex";
@@ -253,3 +261,33 @@ let reload = () => {
 	newgame.onmouseout = () =>  newgame.style.display = "none";
 	}
 	
+	// putting X check in a cpecific cell
+	
+let putX = (rcell) => {
+	
+							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
+							popsound.play();
+							cells[rcell].flag = true;
+							cells[rcell].check =  "x";
+							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
+							nextPlayerField.innerHTML = "NEXT MOVE";
+							cells[rcell].style.backgroundImage = "radial-gradient(#67cfe6, #a9e4f1)";
+							
+};
+
+ // constructing a sound object
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+};
