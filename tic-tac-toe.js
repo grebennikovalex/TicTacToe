@@ -46,7 +46,6 @@ for (let i = 0; i < 9; i++) {
 	
 		let cell = document.createElement('div');
 		cell.className = "box";
-		cell.innerHTML = " ";
 		cell.flag = false;
 		cell.delayflag = false;
 		cell.check = " ";
@@ -65,7 +64,10 @@ for (let i = 0; i < 9; i++) {
 			
 				cell.onmousedown = () => {
 					
-					if (!cell.flag && !cell.delayflag) {		
+					// checking the clicked cell for respond state
+					
+				if (!cell.flag && !cell.delayflag)  {		
+					
 					
 							counter++; // odd number of move, O's move
 							console.log(counter);
@@ -75,10 +77,6 @@ for (let i = 0; i < 9; i++) {
 							
 							 if(counter % 2 !== 0) {
 								 
-									// checking the clicked cell for respond state
-								 
-								if (!cell.flag && !cell.delayflag){
-									
 									// placing the O in the corresponding cell
 									cell.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
 									
@@ -98,7 +96,7 @@ for (let i = 0; i < 9; i++) {
 									
 								};			
 								
-							 } 
+							  
 										
 						// checking the winner after the O's move
 						// and displaying the winner state of the game board if true
@@ -118,7 +116,8 @@ for (let i = 0; i < 9; i++) {
 						
 						counter++;	// even number of move, X's move
 						console.log(counter);	
-				};	
+					};	
+					
 			};		
 	});							
 								
