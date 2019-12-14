@@ -13,7 +13,7 @@ document.body.append(headbox);
 	// field in the header for the next move display - text
 let nextPlayerField = document.createElement('div');
 nextPlayerField.className = "npfield";
-nextPlayerField.innerHTML = "START MOVE";
+nextPlayerField.innerHTML = "RANDOM MOVE";
 headbox.append(nextPlayerField);
 
 	// field in the header for the next move display - signs O or X or empty
@@ -25,7 +25,8 @@ headbox.append(mark);
 	// hidden element for new game start
 let newgame = document.createElement('div');
 newgame.className = "newgame";
-newgame.innerHTML = "ONE MORE!"
+newgame.style.display = "flex";
+newgame.innerHTML = "START!!!";
 headbox.append(newgame);
 
 	// main container for the board
@@ -57,17 +58,7 @@ function sound(src) {
 
 let popsound = new sound("pop.mp3"); // popping sound
 
-let putX = (rcell) => {
-	
-							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
-							popsound.play();
-							cells[rcell].flag = true;
-							cells[rcell].check =  "x";
-							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
-							nextPlayerField.innerHTML = "NEXT MOVE";
-							cells[rcell].style.backgroundImage = "radial-gradient(#67cfe6, #a9e4f1)";
-							
-};
+
 
 	// creating an array of cells with initial properties for each cell
 
@@ -81,6 +72,25 @@ for (let i = 0; i < 9; i++) {
 		main.append(cell);
 		cells.push(cell);
 	};
+	
+	
+	
+
+
+	
+
+newgame.onmousedown = () => { 
+
+newgame.style.display = "none";
+
+setTimeout(game, 500);	
+
+};
+
+
+
+
+	
 
 let randomcheck = () => { 
 
@@ -110,14 +120,61 @@ let flag = true;
 	
 };	
 
-
-
-	setTimeout(randomcheck, 1000);
-	counter++;	
+let putX = (rcell) => {
 	
+							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
+							popsound.play();
+							counter++;
+							console.log(counter);
+							cells[rcell].flag = true;
+							cells[rcell].check =  "x";
+							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
+							nextPlayerField.innerHTML = "NEXT MOVE";
+							cells[rcell].style.backgroundImage = "radial-gradient(#67cfe6, #a9e4f1)";
+							if (counter == 9) winFill();
+							
+};
+
+
+    // function for display the winner state of the game board	
+	
+let winFill = () =>	[...cells].forEach(cell => {
+									
+			cell.flag = true; // adding non-respond state for all the cells
+			mark.style.background = "red";
+			nextPlayerField.innerHTML = "THE WINNER";
+			reload(); // calling for the start new game function
+				
+			// checking which move caused the winner state
+									
+			if (counter % 2 == 0) {
+										
+				mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
+										
+			} else {
+										
+				mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>";
+										
+					};
+					
+			// checking the standoff state and changing the game board 		
+										
+			if (!winCheck()) {
+				mark.innerHTML = " ";	
+				nextPlayerField.innerHTML = "STANDOFF";	
+				[...cells].forEach(cell => cell.style.background = "silver");
+				reload();
+				
+				
+			};
+										
+	});
+			
 
 			
-					
+function game() {	
+
+setTimeout(randomcheck, 500);				
 								
 	// changing the state of clicked cell
 	
@@ -131,7 +188,7 @@ let flag = true;
 					
 					
 							counter++; // odd number of move, O's move
-							console.log(counter);
+							//console.log(counter);
 							
 							
 							// the O's move
@@ -161,59 +218,34 @@ let flag = true;
 										
 						// checking the winner after the O's move
 						// and displaying the winner state of the game board if true
-						if (winCheck()) winFill();
-							
+						if (winCheck()) winFill()
+						
+											
 						
 						// function call for the X's move with delay if O's didn't win 
-						if (!winCheck() && counter < 9) {
-							setTimeout(randomcheck, 1000);
+						else {
+							setTimeout(randomcheck, 500);
 							
 							// flagging all cells for not responding onckick while delay
 							[...cells].forEach(cell => cell.delayflag = true);
-						}
-						
-						else winFill();
+						};
 						
 						
-						counter++;	// even number of move, X's move
+							
+						
+						
 						console.log(counter);	
+						console.log(winCheck());
 					};	
 					
 			};		
-	});							
-								
-	// function for display the winner state of the game board					
-	
-let winFill = () =>	[...cells].forEach(cell => {
-									
-			cell.flag = true; // adding non-respond state for all the cells
-			mark.style.background = "red";
-			nextPlayerField.innerHTML = "THE WINNER";
-			reload(); // calling for the start new game function
-				
-			// checking which move caused the winner state
-									
-			if (counter % 2 !== 0) {
-										
-				mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
-										
-			} else {
-										
-				mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>";
-										
-					};
-					
-			// checking the standoff state and changing the game board 		
-										
-			if (counter == 9 && !winCheck()) {
-				mark.innerHTML = " ";	
-				nextPlayerField.innerHTML = "STANDOFF";	
-				[...cells].forEach(cell => cell.style.background = "silver");
-				reload();
-			};
-										
 	});
-														
+
+	
+};								
+					
+	
+												
 	
 
 
@@ -232,55 +264,57 @@ let winCheck = () => {
 				cells[1].style.background = wincolor;
 				cells[2].style.background = wincolor;
 				return true;
-		};
-		if (cells[3].check == cells[4].check && cells[4].check == cells[5].check && cells[5].check != " ") {
+		}
+		else if (cells[3].check == cells[4].check && cells[4].check == cells[5].check && cells[5].check != " ") {
 				cells[3].style.background = wincolor;
 				cells[4].style.background = wincolor;
 				cells[5].style.background = wincolor;
 				return true;
-		};				
-		if (cells[6].check == cells[7].check && cells[7].check == cells[8].check && cells[8].check != " ") {
+		}				
+		else if (cells[6].check == cells[7].check && cells[7].check == cells[8].check && cells[8].check != " ") {
 				cells[6].style.background = wincolor;
 				cells[7].style.background = wincolor;
 				cells[8].style.background = wincolor;
 				return true;
-		};
+		} 
 		
 		//checking columns
 				
-		if (cells[0].check == cells[3].check && cells[3].check == cells[6].check && cells[6].check != " ") {
+		else if (cells[0].check == cells[3].check && cells[3].check == cells[6].check && cells[6].check != " ") {
 				cells[0].style.background = wincolor;
 				cells[3].style.background = wincolor;
 				cells[6].style.background = wincolor;
 				return true;
-		};
-		if (cells[1].check == cells[4].check && cells[4].check == cells[7].check && cells[7].check != " ") {
+		}
+		else if (cells[1].check == cells[4].check && cells[4].check == cells[7].check && cells[7].check != " ") {
 				cells[1].style.background = wincolor;
 				cells[4].style.background = wincolor;
 				cells[7].style.background = wincolor;
 				return true;
-		};
-		if (cells[2].check == cells[5].check && cells[5].check == cells[8].check && cells[8].check != " ") {
+		}
+		else if (cells[2].check == cells[5].check && cells[5].check == cells[8].check && cells[8].check != " ") {
 				cells[2].style.background = wincolor;
 				cells[5].style.background = wincolor;
 				cells[8].style.background = wincolor;
 				return true;
-		};
+		}
 		
 		//checking diagonals
 				
-		if (cells[0].check == cells[4].check && cells[4].check == cells[8].check && cells[8].check != " ") {
+		else if (cells[0].check == cells[4].check && cells[4].check == cells[8].check && cells[8].check != " ") {
 				cells[0].style.background = wincolor;
 				cells[4].style.background = wincolor;
 				cells[8].style.background = wincolor;
 				return true;
-		};
-		if (cells[2].check == cells[4].check && cells[4].check == cells[6].check && cells[6].check != " ") {
+		}
+		else if (cells[2].check == cells[4].check && cells[4].check == cells[6].check && cells[6].check != " ") {
 				cells[2].style.background = wincolor;
 				cells[4].style.background = wincolor;
 				cells[6].style.background = wincolor;
 				return true;
-		};
+		}
+		
+		else return false;
 		
 		
 		
@@ -289,13 +323,16 @@ let winCheck = () => {
 
 	// new game start
 
-let reload = () => {
-	nextPlayerField.onmouseover = () =>  newgame.style.display = "flex";
-	newgame.onmousedown = () =>	window.location.reload(false);
+function reload() {
+	nextPlayerField.onmouseover = () =>  {
+		newgame.innerHTML = "ONE MORE!!!";
+		newgame.style.display = "flex";
+		};
 	newgame.onmouseout = () =>  newgame.style.display = "none";
+	newgame.onmousedown = () =>	window.location.reload(false);
 	};
 	
-	// putting X check in a cpecific cell
+	
 	
 
 
