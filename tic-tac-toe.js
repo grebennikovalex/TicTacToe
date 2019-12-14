@@ -38,7 +38,36 @@ main.className = "container";
 let cells = [];
 let counter = 0;
 const wincolor = "#6a89cc"; // color for winner row
+
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+};
+
 let popsound = new sound("pop.mp3"); // popping sound
+
+let putX = (rcell) => {
+	
+							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
+							popsound.play();
+							cells[rcell].flag = true;
+							cells[rcell].check =  "x";
+							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
+							nextPlayerField.innerHTML = "NEXT MOVE";
+							cells[rcell].style.backgroundImage = "radial-gradient(#67cfe6, #a9e4f1)";
+							
+};
 
 	// creating an array of cells with initial properties for each cell
 
@@ -47,15 +76,47 @@ for (let i = 0; i < 9; i++) {
 		let cell = document.createElement('div');
 		cell.className = "box";
 		cell.flag = false;
-		cell.delayflag = false;
+		cell.delayflag = true;
 		cell.check = " ";
 		main.append(cell);
 		cells.push(cell);
 	};
+
+let randomcheck = () => { 
+
+let flag = true;
+	
+	// iterating the array while the random number finds an empty cell
+	
+	while (flag) {
+
+		let rcell = Math.floor(Math.random() * 9); 
+		
+				for (let i = 0; i < cells.length; i++) {
+					
+						if (cells[rcell].check == " ") {
+							
+							putX(rcell);
+							[...cells].forEach(cell => cell.delayflag = false);	
+							if (winCheck()) winFill();
+							flag = false;
+						};
+					
+				
+				};
+				
+		};
+		
+	
+};	
+
+
+
+	setTimeout(randomcheck, 1000);
+	counter++;	
 	
 
-	
-					
+			
 					
 								
 	// changing the state of clicked cell
@@ -75,7 +136,7 @@ for (let i = 0; i < 9; i++) {
 							
 							// the O's move
 							
-							 if(counter % 2 !== 0) {
+							 if(counter % 2 == 0) {
 								 
 									// placing the O in the corresponding cell
 									cell.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
@@ -154,35 +215,9 @@ let winFill = () =>	[...cells].forEach(cell => {
 	});
 														
 	
-	// random move by the X's
 
-let randomcheck = () => { 
 
-let flag = true;
-	
-	// iterating the array while the random number finds an empty cell
-	
-	while (flag) {
 
-		let rcell = Math.floor(Math.random() * 9); 
-		
-				for (let i = 0; i < cells.length; i++) {
-					
-						if (cells[rcell].check == " ") {
-							
-							putX(rcell);
-							[...cells].forEach(cell => cell.delayflag = false);	
-							if (winCheck()) winFill();
-							flag = false;
-						};
-					
-				
-				};
-				
-		};
-		
-	
-};
 
 	// checking who's won the game, changing the color of the winner's row
 
@@ -258,35 +293,11 @@ let reload = () => {
 	nextPlayerField.onmouseover = () =>  newgame.style.display = "flex";
 	newgame.onmousedown = () =>	window.location.reload(false);
 	newgame.onmouseout = () =>  newgame.style.display = "none";
-	}
+	};
 	
 	// putting X check in a cpecific cell
 	
-let putX = (rcell) => {
-	
-							cells[rcell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
-							popsound.play();
-							cells[rcell].flag = true;
-							cells[rcell].check =  "x";
-							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
-							nextPlayerField.innerHTML = "NEXT MOVE";
-							cells[rcell].style.backgroundImage = "radial-gradient(#67cfe6, #a9e4f1)";
-							
-};
 
- // constructing a sound object
 
-function sound(src) {
-  this.sound = document.createElement("audio");
-  this.sound.src = src;
-  this.sound.setAttribute("preload", "auto");
-  this.sound.setAttribute("controls", "none");
-  this.sound.style.display = "none";
-  document.body.appendChild(this.sound);
-  this.play = function(){
-    this.sound.play();
-  }
-  this.stop = function(){
-    this.sound.pause();
-  }
-};
+
+
