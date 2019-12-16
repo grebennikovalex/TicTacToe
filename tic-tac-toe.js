@@ -13,7 +13,7 @@ document.body.append(headbox);
 	// field in the header for the next move display - text
 let nextPlayerField = document.createElement('div');
 nextPlayerField.className = "npfield";
-
+nextPlayerField.innerHTML = "START";
 headbox.append(nextPlayerField);
 
 
@@ -27,7 +27,7 @@ headbox.append(mark);
 let newgame = document.createElement('div');
 newgame.className = "newgame";
 newgame.style.display = "flex";
-newgame.innerHTML = "START!!!";
+newgame.innerHTML = "START";
 headbox.append(newgame);
 
 	// main container for the board
@@ -39,10 +39,10 @@ main.className = "container";
 	// some variables 
 let cells = [];
 let counter = 0;
-let xcounter = 0;
-let ocounter = 0;
-let offcounter = 0;
-let games = 0;
+let xcounter = " ";
+let ocounter = " ";
+let offcounter = " ";
+let games = " ";
 
 
 	// sound constructor
@@ -60,6 +60,22 @@ function sound(src) {
     this.sound.pause();
   }
 };
+
+function save() {
+  localStorage.setItem('counter', JSON.stringify(counter));
+  localStorage.setItem('xcounter', JSON.stringify(xcounter));
+  localStorage.setItem('ocounter', JSON.stringify(ocounter));
+  localStorage.setItem('offcounter', JSON.stringify(offcounter));
+  localStorage.setItem('games', JSON.stringify(games));
+}
+
+function load() {
+  counter = JSON.parse(localStorage.getItem('counter'));
+  xcounter = JSON.parse(localStorage.getItem('xcounter'));
+  ocounter = JSON.parse(localStorage.getItem('ocounter'));
+  offcounter = JSON.parse(localStorage.getItem('offcounter'));
+  games = JSON.parse(localStorage.getItem('games'));
+}
 
 
 	// sounds
@@ -85,7 +101,7 @@ for (let i = 0; i < 9; i++) {
 
 let countfields = [];
 
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 6; i++) {
 	let countfield = document.createElement('div');
 	countfield.className = "foot";
 	main.append(countfield);
@@ -94,9 +110,20 @@ for (let i = 0; i < 4; i++) {
 
 
 
+let saveBtn = document.createElement('div');
+saveBtn.className = "btn";
+saveBtn.innerHTML = "SAVE";
+main.append(saveBtn);	
 	
-	
+let loadBtn = document.createElement('div');
+loadBtn.className = "btn";
+loadBtn.innerHTML = "LOAD";
+main.append(loadBtn);
 
+let clearBtn = document.createElement('div');
+clearBtn.className = "btn";
+clearBtn.innerHTML = "CLEAR";
+main.append(clearBtn);
 
 
 
@@ -117,23 +144,39 @@ let board = () => {
 			mark.className = "mark";
 		};
 		
-	countfields[1].innerHTML = "STANDOFFS:  " + offcounter;
-	countfields[2].innerHTML = "\"X\" WINS:  " + xcounter;
-	countfields[3].innerHTML = "\"O\" WINS:  " + ocounter;
-	countfields[0].innerHTML = "GAME:  " + games;
-	
+		
 };	
 
 
 let countersDisplay = () => {
 	
-	countfields[1].innerHTML = "STANDOFFS:  " + offcounter;
-	countfields[2].innerHTML = "\"X\" WINS:  " + xcounter;
-	countfields[3].innerHTML = "\"O\" WINS:  " + ocounter;
+	countfields[5].innerHTML = "STANDOFFS:  " + offcounter;
+	countfields[3].innerHTML = "X WINS:  " + xcounter;
+	countfields[4].innerHTML = "O WINS:  " + ocounter;
 	countfields[0].innerHTML = "GAME:  " + games;
 	
 	
 };
+
+
+function timefield() {
+	
+	let time = new Date();
+	countfields[2].innerHTML = "TIME:" + (time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+
+	};
+
+function tick() {
+		
+		new Date().toLocaleTimeString();
+		
+		}
+
+
+
+
+setInterval(timefield, 1000);
+
 
 
 	
@@ -186,7 +229,7 @@ let putX = (cell) => {
 							cells[cell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
 							popsound.play();
 							counter++;
-							nextPlayerField.innerHTML = "THIS MOVE " + counter;
+							nextPlayerField.innerHTML = `THIS MOVE  ${counter + 1}`;
 							console.log(counter);
 							cells[cell].flag = true;
 							cells[cell].check =  "x";
@@ -235,7 +278,7 @@ let winFill = () =>	{
 					
 			// checking the standoff state and changing the game board 		
 										
-			if (!winCheck() && counter == 8) {
+			if (!winCheck() && counter == 9) {
 				mark.innerHTML = " ";	
 				nextPlayerField.innerHTML = "STANDOFF";	
 				offcounter++;
@@ -259,8 +302,8 @@ countersDisplay();
 	// the game itself		
 function game() {	
 
-
-
+mark.check = " ";
+nextPlayerField.innerHTML = `THIS MOVE  ${counter + 1}`;
 setTimeout(randomcheck, 500);				
 						
 	// changing the state of clicked cell
@@ -274,7 +317,7 @@ setTimeout(randomcheck, 500);
 				if (!cell.flag && !cell.delayflag)  {		
 					
 							counter++; 
-							nextPlayerField.innerHTML = "THIS MOVE " + counter;		
+							nextPlayerField.innerHTML = `THIS MOVE  ${counter + 1}`;	
 								 
 									// placing the O in the corresponding cell
 									cell.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
@@ -303,8 +346,7 @@ setTimeout(randomcheck, 500);
 											
 						// function call for the X's move with delay if O's didn't win 
 						else {
-							//setTimeout(randomcheck, 500);
-							
+													
 							setTimeout(logic, 500);
 							// flagging all cells for not responding onckick while delay
 							[...cells].forEach(cell => cell.delayflag = true);
@@ -411,25 +453,66 @@ let winCheck = () => {
 	
 	
 
-
-
+	saveBtn.onmousedown = () => {
+					
+		save(); 
+		
+		counter = " ";
+		xcounter = " ";
+		ocounter = " ";
+		offcounter = " ";
+		games = " ";
+		
+		board();
+			countersDisplay();
+			setTimeout(game, 500); 
+		
+	};
 	
+	
+	loadBtn.onmousedown = () => {
+		
+		load(); 
+		board();
+			countersDisplay();
+			setTimeout(game, 500); 
+		
+	};
+	
+	
+	clearBtn.onmousedown = () => { 
+		
+		counter = " ";
+		xcounter = " ";
+		ocounter = " ";
+		offcounter = " ";
+		games = " ";
+	
+		save(); 
+		
+		board();
+			countersDisplay();
+			setTimeout(game, 500); 
+	
+	};
 
 	
 	nextPlayerField.onmouseover = () =>  {
-		newgame.innerHTML = "ONE MORE!!!";
+		
+		newgame.innerHTML = "START";
 		newgame.style.display = "flex";
+		
 		};
+		
+	
 		
 	newgame.onmouseout = () =>  newgame.style.display = "none";
 	newgame.onmousedown = () =>	{
 		
 			games++;
-		
 			if (mark.check == "x") xcounter++
 			else if (mark.check == "o") ocounter++;	
-			
-			
+				
 			board();
 			countersDisplay();
 			setTimeout(game, 500); 

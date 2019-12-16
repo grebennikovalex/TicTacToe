@@ -78,19 +78,19 @@ function logic() {
 				if 		(cells[0].num == 0) {putX(0); if (winCheck()) winFill()}
 				else if (cells[1].num == 0) {putX(1); if (winCheck()) winFill()}
 				else if (cells[2].num == 0) {putX(2); if (winCheck()) winFill()}
-				
+				return true;
 		}
 		else if (cells[3].num + cells[4].num + cells[5].num == 6) {
 				if 		(cells[3].num == 0) {putX(3); if (winCheck()) winFill()}
 				else if (cells[4].num == 0) {putX(4); if (winCheck()) winFill()}
 				else if (cells[5].num == 0) {putX(5); if (winCheck()) winFill()}
-				
+				return true;
 		}				
 		else if (cells[6].num + cells[7].num + cells[8].num == 6) {
 				if 		(cells[6].num == 0) {putX(6); if (winCheck()) winFill()}
 				else if (cells[7].num == 0) {putX(7); if (winCheck()) winFill()}
 				else if (cells[8].num == 0) {putX(8); if (winCheck()) winFill()}
-				
+				return true;
 		} 
 		
 		// columns
