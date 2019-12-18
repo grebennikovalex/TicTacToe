@@ -33,16 +33,62 @@ body {
 			
 		}
 		
+.box:hover {
+		background-image: radial-gradient(#67cfe6, #a9e4f1);
+	
+	
+}
+
+.boxchecked {
+		width: 150px;
+		height: 150px;
+		float:left;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 3px;
+		background-image: radial-gradient(#67cfe6, #a9e4f1);
+		
+		}
+
+.boxoff {
+		width: 150px;
+		height: 150px;
+		float:left;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 3px;
+		background-image: radial-gradient(#9a9a9a , #c0c0c0);
+		
+		}
+
+.boxwin {
+		width: 150px;
+		height: 150px;
+		float:left;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 3px;
+		background: #6a89cc;
+		
+		}
+
+
+
+
+
+		
 .npfield {
 		width: 306px; 
 		height: 150px;
 		float: left;
 		margin: 3px; 
-		
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #3c6382;
+		background: #273c75;
 		font-family: Courier;
 		font-size: 25px;
 		font-weight: bold;
@@ -58,8 +104,18 @@ body {
 		align-items: center;
 		justify-content: center;
 		margin: 3px;
-		background: #33d9b2;
 		background-image: radial-gradient(#22b794, #33d9b2);
+		}
+		
+.redmark {
+		width: 150px; 
+		height: 150px;
+		float: left;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 3px;
+		background: red;
 		}
 		
 .newgame {
@@ -74,12 +130,58 @@ body {
 		justify-content: center;
 		background: #f368e0;
 		font-family: Courier;
-		font-size: 40px;
+		font-size: 25px;
 		font-weight: bold;
 		color: white;
   
   
 		}
+		
+.foot {
+		width: 140px; 
+		height: 35px;
+		float: left;
+		display: flex;
+		align-items: center;
+		justify-content: left;
+		margin: 3px;
+		background: #273c75;
+		font-family: Courier;
+		font-size: 16px;
+		padding-left: 10px;
+		color: white;
+		
+		
+		
+		
+		}
+		
+
+		
+.btn {
+		width: 150px;
+		height: 100px;
+		float:left;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 3px;
+		font-family: Courier;
+		font-size: 25px;
+		font-weight: bold;
+		color: white;
+		background: #273c75;
+		cursor: pointer;
+		
+		}
+		
+
+		
+.btn:active {
+		
+		background: #f368e0;
+		
+		}		
 
 .oo, .xx {
 			
