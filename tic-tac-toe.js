@@ -43,6 +43,8 @@ let xcounter = " ";
 let ocounter = " ";
 let offcounter = " ";
 let games = " ";
+let start, end;
+
 
 
 	// sound constructor
@@ -154,7 +156,7 @@ let countersDisplay = () => {
 	countfields[3].innerHTML = "X WINS:  " + xcounter;
 	countfields[4].innerHTML = "O WINS:  " + ocounter;
 	countfields[0].innerHTML = "GAME:  " + games;
-	
+	countfields[1].innerHTML = " ";
 	
 };
 
@@ -162,14 +164,15 @@ let countersDisplay = () => {
 function timefield() {
 	
 	let time = new Date();
-	countfields[2].innerHTML = "TIME:" + (time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+	countfields[2].innerHTML = 
+	"TIME:" + (new Date().toLocaleTimeString());
 
 	};
 
-function tick() {
-		
-		new Date().toLocaleTimeString();
-		
+function timeMove() {
+	
+	countfields[1].innerHTML = (end - start)/1000 + " sec.";
+				
 		}
 
 
@@ -289,7 +292,8 @@ let winFill = () =>	{
 				
 				
 			};
-										
+	end = Date.now();
+	timeMove();
 };
 	
 	// functions used for delay	in setTimeout	
@@ -301,7 +305,7 @@ countersDisplay();
 
 	// the game itself		
 function game() {	
-
+start = Date.now();
 mark.check = " ";
 nextPlayerField.innerHTML = `THIS MOVE  ${counter + 1}`;
 setTimeout(randomcheck, 500);				
