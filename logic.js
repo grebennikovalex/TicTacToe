@@ -3,6 +3,91 @@
 
 	'use strict'
 	
+function winCheck() {
+	
+	for (let i = 0; i < cells.length; i++) {
+		
+	//checking rows
+	
+		if (cells[0].check == cells[1].check && cells[1].check == cells[2].check && cells[2].check != " ") {
+				if 		(cells[0].num + cells[1].num + cells[2].num == 3) mark.check = "x"
+				else if (cells[0].num + cells[1].num + cells[2].num == 9) mark.check = "o";
+				cells[0].className = "boxwin";
+				cells[1].className = "boxwin";
+				cells[2].className = "boxwin";
+				return true;
+		}
+		else if (cells[3].check == cells[4].check && cells[4].check == cells[5].check && cells[5].check != " ") {
+				if 		(cells[3].num + cells[4].num + cells[5].num == 3) mark.check = "x"
+				else if (cells[3].num + cells[4].num + cells[5].num == 9) mark.check = "o";
+				cells[3].className = "boxwin";
+				cells[4].className = "boxwin";
+				cells[5].className = "boxwin";
+				return true;
+		}				
+		else if (cells[6].check == cells[7].check && cells[7].check == cells[8].check && cells[8].check != " ") {
+				if 		(cells[6].num + cells[7].num + cells[8].num == 3) mark.check = "x"
+				else if (cells[6].num + cells[7].num + cells[8].num == 9) mark.check = "o";
+				cells[6].className = "boxwin";
+				cells[7].className = "boxwin";
+				cells[8].className = "boxwin";
+				return true;
+		} 
+		
+		//checking columns
+				
+		else if (cells[0].check == cells[3].check && cells[3].check == cells[6].check && cells[6].check != " ") {
+				if 		(cells[0].num + cells[3].num + cells[6].num == 3) mark.check = "x"
+				else if (cells[0].num + cells[3].num + cells[6].num == 9) mark.check = "o";
+				cells[0].className = "boxwin";
+				cells[3].className = "boxwin";
+				cells[6].className = "boxwin";
+				return true;
+		}
+		else if (cells[1].check == cells[4].check && cells[4].check == cells[7].check && cells[7].check != " ") {
+				if 		(cells[1].num + cells[4].num + cells[7].num == 3) mark.check = "x"
+				else if (cells[1].num + cells[4].num + cells[7].num == 9) mark.check = "o";
+				cells[1].className = "boxwin";
+				cells[4].className = "boxwin";
+				cells[7].className = "boxwin";
+				return true;
+		}
+		else if (cells[2].check == cells[5].check && cells[5].check == cells[8].check && cells[8].check != " ") {
+				if 		(cells[2].num + cells[5].num + cells[8].num == 3) mark.check = "x"
+				else if (cells[2].num + cells[5].num + cells[8].num == 9) mark.check = "o";
+				cells[2].className = "boxwin";
+				cells[5].className = "boxwin";
+				cells[8].className = "boxwin";
+				return true;
+		}
+		
+		//checking diagonals
+				
+		else if (cells[0].check == cells[4].check && cells[4].check == cells[8].check && cells[8].check != " ") {
+				if 		(cells[0].num + cells[4].num + cells[8].num == 3) mark.check = "x"
+				else if (cells[0].num + cells[4].num + cells[8].num == 9) mark.check = "o";
+				cells[0].className = "boxwin";
+				cells[4].className = "boxwin";
+				cells[8].className = "boxwin";
+				return true;
+		}
+		else if (cells[2].check == cells[4].check && cells[4].check == cells[6].check && cells[6].check != " ") {
+				if 		(cells[2].num + cells[4].num + cells[6].num == 3) mark.check = "x"
+				else if (cells[2].num + cells[4].num + cells[6].num == 9) mark.check = "o";
+				cells[2].className = "boxwin";
+				cells[4].className = "boxwin";
+				cells[6].className = "boxwin";
+				return true;
+		}
+		
+		else return false;
+		
+		
+		
+	};	
+};
+	
+	
 function logic() {
 	
 	for (let i = 0; i < cells.length; i++) {
