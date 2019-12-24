@@ -4,7 +4,7 @@ function game() {
 	
 
 countfields[0].innerHTML = "GAME:  " + ++players[cplr].games;
-playerField.innerHTML = "PLAYER: " + players[cplr].name;
+playerField.innerHTML = "CURRENT PLAYER:  " + "<strong>" + players[cplr].name + "</strong>";
 start = Date.now();
 mark.check = " ";
 nextPlayerField.innerHTML = `LOGIC MOVE  ${counter + 1}`;

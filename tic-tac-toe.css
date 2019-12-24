@@ -4,7 +4,10 @@ body {
 		
 		}
 		
-
+a:ilnk {
+		color: white;
+		text-decoration: none;
+		}
 
 .container {
 	
@@ -190,14 +193,6 @@ body {
 		
 
 		
-.btn:active {
-		
-		background: #f368e0;
-		height: 100px;
-		margin: 3px;
-		
-		}	
-
 
 
 .start {
@@ -234,11 +229,12 @@ body {
 
 .inputPlayer {
 	
-		width: 100%;
+		width: 336px;
 		height: 60px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding-left: 20px;
 		font-family: Courier;
 		font-size: 40px;
 		font-weight: bold;
@@ -260,7 +256,7 @@ body {
 .listP {
 		
 		float: left;
-		width: 80%;
+		width: 280px;
 		display:flex;
 		height: 40px;
 		align-items: center;
@@ -272,11 +268,52 @@ body {
 		margin-top: 5%;
 		background: #a9e4f1;
 		cursor: pointer;
-		padding-left: 10px;
+		padding-left: 20px;
 		
 		}
 		
-.listP:hover {
+.listPnew {
+		
+		float: left;
+		width: 280px;
+		display:flex;
+		height: 40px;
+		align-items: center;
+		justify-content: left;
+		font-family: Courier;
+		font-weight: bold;
+		font-size: 20px;
+		margin-right: 10px;
+		margin-top: 5%;
+		background: #FDA7DF;
+		cursor: pointer;
+		padding-left: 20px;
+		
+		}
+		
+.listPb {
+		
+		float: left;
+		width: 340px;
+		display:flex;
+		height: 40px;
+		align-items: center;
+		justify-content: left;
+		font-family: Courier;
+		font-weight: bold;
+		font-size: 20px;
+		margin-right: 10px;
+		margin-top: 5%;
+		background: #6a89cc;
+		cursor: pointer;
+		padding-left: 20px;
+		color: white;
+		
+		}
+		
+		
+		
+.listP:hover, .listPb:hover, .listPnew:hover {
 	
 		background: #273c75;
 		color: white;
@@ -298,6 +335,29 @@ body {
 	
 		}
 		
+.footfield {
+		
+		display: flex;
+		width: 462px;
+		height: 80px;
+		float: left;
+		align-items: center;
+		justify-content: center;
+		font-weight: bold;
+		font-size: 30px;
+		font-family: Courier;
+		cursor: pointer;
+		background: #6a89cc;
+		margin: 3px;
+		color: white;
+		
+		}
+		
+.footfield:hover {
+		
+		background: #f368e0;	
+		
+		}		
 
 .oo, .xx, .rem:hover {
 			

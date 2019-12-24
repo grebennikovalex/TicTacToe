@@ -71,9 +71,9 @@ let winFill = () =>	{
 					
 					nextPlayerField.innerHTML = "THE WINNER: " + players[cplr].name;
 					
-					
-					
 					countfields[4].innerHTML = "O WINS:  " + ++players[cplr].ocounter;
+					
+					
 	
 					}
 					
@@ -81,10 +81,8 @@ let winFill = () =>	{
 											
 					mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>";
 					
-					nextPlayerField.innerHTML = "THE WINNER: LOGIC";
-					
-					
-					
+					nextPlayerField.innerHTML = players[cplr].name + "  LOST";
+															
 					countfields[3].innerHTML = "X WINS:  " + ++players[cplr].xcounter;
 					
 					};
@@ -119,9 +117,9 @@ let winFill = () =>	{
 	countfields[1].innerHTML = "SPENT: " + timeMove(end - start);
 	
 	if ((end - start) < players[cplr].record) players[cplr].record = end - start;
+	recordo = end - start;
+	if (mark.check == "o") players[cplr].recordo = recordo;
 	
-		playerScore.innerHTML = "SCORE: " + timeMove(players[cplr].record);
-		
 	countersDisplay();
 };
 
@@ -172,8 +170,7 @@ function timefield() {
 	"TIME:" + (new Date().toLocaleTimeString());
 	if (time - start >= 30000) {
 		
-			board();
-			setTimeout(game, 500);
+			
 			
 			};
 	};

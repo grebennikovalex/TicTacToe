@@ -8,10 +8,13 @@
 let players = [];
 let closeMarks = [];
 let cells = [];
+let arrinfo = [];
 let counter = 0;
 let start, end;
 let cplr = "";
 let rem = "";
+let recordo = "";
+
 
 	// creating the game board elements and addind initial properties for them
 	
@@ -36,7 +39,7 @@ let mark = document.createElement('div');
 	// hidden element for new game start
 let newgame = document.createElement('div');
 	newgame.className = "newgame";
-	newgame.style.display = "flex";
+	newgame.style.display = "none";
 	newgame.innerHTML = "START";
 	headbox.append(newgame);
 
@@ -47,37 +50,14 @@ let main = document.createElement('div');
 	
 let playerField = document.createElement('div');
 	playerField.className = "field";
-	playerField.innerHTML = "PLAYER: ";
+	playerField.style.width = "296px";
 	headbox.append(playerField);
 
-let playerAdd = document.createElement('div');
-	playerAdd.className = "field";
-	playerAdd.innerHTML = "PLAYERS  LIST";
-	headbox.append(playerAdd);		
+	
 	
 let playerScore = document.createElement('div');
 	playerScore.className = "field";
-	
 	headbox.append(playerScore);
-
-
-
-function save() {
-	
-	localStorage.setItem('players', JSON.stringify(players));
-	
-	
-    
-}
-
-function load() {
-	
-	players = JSON.parse(localStorage.getItem('players'));
-	
-	
-}
-
-
 
 
 	// sounds
@@ -108,25 +88,11 @@ for (let i = 0; i < 6; i++) {
 	countfields.push(countfield);
 };
 
+let playerAdd = document.createElement('div');
+	playerAdd.className = "footfield";
+	playerAdd.innerHTML = "PLAYERS  LIST";
+	main.append(playerAdd);	
 
-
-let saveBtn = document.createElement('div');
-	saveBtn.className = "btn";
-	saveBtn.innerHTML = "SAVE";
-	main.append(saveBtn);	
-	
-let loadBtn = document.createElement('div');
-	loadBtn.className = "btn";
-	loadBtn.innerHTML = "LOAD";
-	main.append(loadBtn);
-
-let clearBtn = document.createElement('div');
-	clearBtn.className = "btn";
-	clearBtn.innerHTML = "CLEAR";
-	main.append(clearBtn);
-	
-	
-	
 	
 	// player selection
 	
@@ -140,35 +106,55 @@ let initModal = document.createElement('div');
 	startContainer.append(initModal);
 	
 let inputP = document.createElement('input');
-	inputP.maxLength = 8;
-	inputP.placeholder = " Player...";
+	inputP.maxLength = 13;
+	inputP.placeholder = "Player...";
 	inputP.className = "inputPlayer";
 	initModal.append(inputP);
 	
+let saveBtn = document.createElement('div');
+	saveBtn.className = "listPb";
+	saveBtn.innerHTML = "SAVE";
+	
+	
+let loadBtn = document.createElement('div');
+	loadBtn.className = "listPb";
+	loadBtn.innerHTML = "LOAD";
+	
+	
 
+	
+let A = document.createElement('a');
+	
+	A.className = "listPb";
+	
 
 function init() {
+	
+	
 	
 	startContainer.style.display = "flex";
 	
 	
+		
 	for (let i = 0; i < players.length; i++ ) {
 		
 		initModal.append(players[i]);
-		players[i].innerHTML = players[i].name;
-		
-	
-		
+		players[i].innerHTML = players[i].name + ":  " + players[i].ocounter + ":  " + timeMove(players[i].recordo);
 		initModal.append(closeMarks[i]);
-		
-		
+				
 	};
 		
-	
+	initModal.append(saveBtn);	
+	initModal.append(loadBtn);
+	initModal.append(A);
+	A.textContent = "SAVE to create JSON...";
+	A.removeAttribute( 'href' );
 	
 };	
 
-init();
+
+
+
 
 
 
@@ -198,11 +184,11 @@ let board = () => {
 
 let countersDisplay = () => {
 	
-	
-	
-	countfields[5].innerHTML = "STANDOFFS:  " + players[cplr].offcounter;
-	countfields[4].innerHTML = "O WINS:  " + players[cplr].ocounter;
-	countfields[3].innerHTML = "X WINS:  " + players[cplr].xcounter;
+		playerScore.innerHTML = "SCORE: " + timeMove(players[cplr].record);
+		
+		countfields[5].innerHTML = "STANDOFFS:  " + players[cplr].offcounter;
+		countfields[4].innerHTML = "O WINS:  " + players[cplr].ocounter;
+		countfields[3].innerHTML = "X WINS:  " + players[cplr].xcounter;
 	
 	
 	};
@@ -212,58 +198,35 @@ setInterval(timefield, 1000);
 
 
 
-	
-	// starting game button
-	
-newgame.onmouseover = () => newgame.style.background = "#c768f3";
-newgame.onmouseout = () => newgame.style.background = "#f368e0";	
-newgame.onmousedown = () => { 
 
-		newgame.style.display = "none";
-		mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>";
-		board();
-		setTimeout(game, 500); 	
-
-		};
-
-
-
-
-
-	playerAdd.onmousedown = () => {
-		
-		
+playerAdd.onmousedown = () => {
+				
 		init();
 		addPlayer();
 		
 		};
 	
-	saveBtn.onmousedown = () => {
-					
+saveBtn.onmousedown = () => {
+	
 		save(); 
-				
-		};
+		[...players].forEach(player => player.className = "listP");
+		getFile();
+	
+};
+
 	
 	
-	loadBtn.onmousedown = () => {
+loadBtn.onmousedown = () => {
+	
 		
 		load(); 
 		init();
-				
+		
+			
 		};
-	
-	
-	clearBtn.onmousedown = () => {
-		
-		init(); 
-		
-		}
-		 
-		
-	
 
 	
-	nextPlayerField.onmouseover = () =>  {
+nextPlayerField.onmouseover = () =>  {
 		
 		newgame.innerHTML = "START";
 		newgame.style.display = "flex";
@@ -272,8 +235,9 @@ newgame.onmousedown = () => {
 		
 	
 		
-	newgame.onmouseout = () =>  newgame.style.display = "none";
-	newgame.onmousedown = () =>	{
+newgame.onmouseout = () =>  newgame.style.display = "none";
+
+newgame.onmousedown = () =>	{
 							
 		board();
 		setTimeout(game, 500); 
@@ -281,7 +245,6 @@ newgame.onmousedown = () => {
 		};
 
 
-addPlayer();
 
 	
 function addPlayer() {
@@ -300,14 +263,25 @@ function addPlayer() {
 				if (inputP.value === "") return;
 						
 			let player = document.createElement('div');
-				player.className = "listP";
+				player.className = "listPnew";
 				player.name = inputP.value;
 				player.name = player.name.toUpperCase();
-				
 				player.xcounter = 0;
 				player.ocounter = 0;
 				player.offcounter = 0;
 				player.games = 0;
+				player.record = 30000;
+				player.recordo = 0;
+				
+				let	playerinfo = { 
+					name : "player",
+					xcounter : 0,
+					ocounter : 0,
+					offcounter : 0,
+					games : 0, 
+					record : 0,
+					recordo : 0
+					};			
 			
 			let closeM = document.createElement('div');
 				closeM.className = "closeMark";
@@ -315,23 +289,89 @@ function addPlayer() {
 							
 				players.push(player);
 				closeMarks.push(closeM);
+				arrinfo.push(playerinfo);
 								
 				[...players].forEach(player => console.log(player.name));
 				
 				};
-
+				
+				inputP.value = '';
+			
 			};
 			
 			
-			init();
-			handle();
+				init();
+				handle();
+				
 			
-			//inputP.value = '';
 			
 	};
 	
 };
 
+
+
+let save = () =>  {
+	
+	for (let i = 0; i < players.length; i++) {
+		
+				arrinfo[i].name = players[i].name;
+				arrinfo[i].xcounter = players[i].xcounter;
+				arrinfo[i].ocounter = players[i].ocounter;
+				arrinfo[i].offcounter = players[i].offcounter;
+				arrinfo[i].games = players[i].games;
+				arrinfo[i].record = players[i].record;
+				arrinfo[i].recordo = players[i].recordo;
+				
+	};
+	
+	localStorage.setItem('arrinfo', JSON.stringify(arrinfo));
+};	
+	
+
+
+
+
+
+let load = () => {
+	
+	arrinfo = JSON.parse(localStorage.getItem('arrinfo'));
+	
+	console.log(JSON.stringify(arrinfo, null, 4));
+	
+	[...players].forEach(player => player.remove());
+	players = [];
+	
+	[...closeMarks].forEach(mark => mark.remove());
+	closeMarks = [];
+	
+	for (let i = 0; i < arrinfo.length; i++) {
+		
+		let player = document.createElement('div');
+			player.className = "listP";
+			
+			player.name = arrinfo[i].name;
+			player.xcounter = arrinfo[i].xcounter;
+			player.ocounter = arrinfo[i].ocounter;
+			player.offcounter = arrinfo[i].offcounter;
+			player.games = arrinfo[i].games;
+			player.record = arrinfo[i].record;
+			player.recordo = arrinfo[i].recordo;
+			
+		let closeM = document.createElement('div');
+			closeM.className = "closeMark";
+			closeM.innerHTML = "<img src = 'files/x_small.png' class = 'rem' height='32' width='32'>";
+							
+		players.push(player);
+		closeMarks.push(closeM);
+			
+		
+	};
+	
+	
+	addPlayer();
+	
+};
 
 function handle() {	
 
@@ -339,7 +379,6 @@ function handle() {
 			
 				player.onmousedown = () => {
 				cplr = players.indexOf(player);
-				player.record = 30000;
 				startContainer.style.display = "none";
 				board();
 				countersDisplay();
@@ -363,10 +402,61 @@ function handle() {
 						closeMarks[rem].remove();
 						players.splice(rem, 1);
 						closeMarks.splice(rem, 1);
+						arrinfo.splice(rem, 1);
+						
+						init();
 		}
 	});
-
+	
+	
 };
- 
+
+let getFile = () => {
+
+function encode(s) {
+    let out = [];
+    for ( let i = 0; i < s.length; i++ ) {
+        out[i] = s.codePointAt(i);
+		
+    }
+		
+    return new Uint8Array(out);
+}
+
+let blob = new Blob( [encode(JSON.stringify(arrinfo))], {type: 'text/plain'});
+	
+    
+
+	
+	A.download = 'TicTacToeStatistics.json';
+	A.textContent = "GET JSON FILE...";
+	A.setAttribute( 'href', URL.createObjectURL( blob ) );
+	
+	
+	
+	   
+}; 
+    
+
+
+
+
+
+load(); 
+init();
+addPlayer();
+    
+
+	
+
+
+
+
+
+
+
+
+
+
 
 
