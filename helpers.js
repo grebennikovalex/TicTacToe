@@ -117,9 +117,8 @@ let winFill = () =>	{
 	countfields[1].innerHTML = "SPENT: " + timeMove(end - start);
 	
 	if ((end - start) < players[cplr].record) players[cplr].record = end - start;
-	recordo = end - start;
-	if (mark.check == "o") players[cplr].recordo = recordo;
-	
+	if (mark.check == "o" && (end - start) < players[cplr].recordo) players[cplr].recordo = end - start;
+		
 	countersDisplay();
 };
 

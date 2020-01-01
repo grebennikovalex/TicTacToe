@@ -139,7 +139,11 @@ function init() {
 	for (let i = 0; i < players.length; i++ ) {
 		
 		initModal.append(players[i]);
-		players[i].innerHTML = players[i].name + ":  " + players[i].ocounter + ":  " + timeMove(players[i].recordo);
+		
+		if(players[i].recordo != 30000 ) players[i].innerHTML = players[i].name + ":  " + players[i].ocounter + ":  " + timeMove(players[i].recordo);
+		
+		else players[i].innerHTML = players[i].name + ":  " + players[i].ocounter + ":  ";
+		
 		initModal.append(closeMarks[i]);
 				
 	};
@@ -255,7 +259,7 @@ function addPlayer() {
 	
 	function keyup(e) {
 		
-	  if (e.keyCode == 13)   { 
+	  if (e.keyCode === 13)   { 
 		
 			console.clear();
 				
@@ -271,7 +275,7 @@ function addPlayer() {
 				player.offcounter = 0;
 				player.games = 0;
 				player.record = 30000;
-				player.recordo = 0;
+				player.recordo = 30000;
 				
 				let	playerinfo = { 
 					name : "player",
@@ -379,14 +383,25 @@ function handle() {
 			
 				player.onmousedown = () => {
 				cplr = players.indexOf(player);
+				player.className = "listPnew";
 				startContainer.style.display = "none";
 				board();
 				countersDisplay();
-				setTimeout(game, 500); 	
+				setTimeout(game, 500);
 				return;
-				
 			}
-
+		);
+		
+		[...players].forEach(player => 
+		
+				player.ondblclick = () => {
+				cplr = players.indexOf(player);
+				startContainer.style.display = "flex";
+				renamePlayer(cplr);
+				init();
+				return;
+			}
+			
 		);
 		
 		
@@ -438,7 +453,35 @@ let blob = new Blob( [encode(JSON.stringify(arrinfo))], {type: 'text/plain'});
 }; 
     
 
+let renamePlayer = (cplr) => {
+	
+	
+	
+	inputP.focus();
+	inputP.placeholder = players[cplr].name + "...";
+	
+	window.onkeyup = keyup;
 
+	function keyup(e) {
+		
+	  if (e.keyCode === 13)   { 
+	
+			if (uniqueCheck(inputP.value)) {
+				if (inputP.value === "") return;
+			
+			players[cplr].name = inputP.value.toUpperCase();
+			inputP.placeholder = "...";
+		}
+		inputP.value = '';
+		init();
+		
+	  }
+	  
+	  	  
+	}
+	
+	
+}
 
 
 

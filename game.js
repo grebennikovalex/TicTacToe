@@ -17,7 +17,7 @@ setTimeout(randomcheck, 500);
 						
 	// changing the state of clicked cell
 	
-[...cells].forEach(cell => {
+cells.map(cell => {
 			
 				cell.onmousedown = () => {
 									
@@ -58,7 +58,7 @@ setTimeout(randomcheck, 500);
 													
 							setTimeout(logic, 500);
 							// flagging all cells for not responding onckick while delay
-							[...cells].forEach(cell => cell.delayflag = true);
+							cells.map(cell => cell.delayflag = true);
 						};
 						
 						console.log(counter);	
