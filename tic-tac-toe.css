@@ -1,3 +1,6 @@
+ /* by grebennikovalex */
+
+
 body {
 		background-color: white;
 		text-align: center;
@@ -256,7 +259,7 @@ a:ilnk {
 .listP {
 		
 		float: left;
-		width: 280px;
+		width: 240px;
 		display:flex;
 		height: 40px;
 		align-items: center;
@@ -272,10 +275,25 @@ a:ilnk {
 		
 		}
 		
+.renbtn {
+		float: left;
+		width: 40px;
+		display:flex;
+		height: 40px;
+		align-items: center;
+		justify-content: center;
+		font-family: Courier;
+		font-weight: bold;
+		font-size: 20px;
+		margin-top: 5%;
+		background: #6a89cc;
+		cursor: pointer;
+			
+		}		
 .listPnew {
 		
 		float: left;
-		width: 280px;
+		width: 240px;
 		display:flex;
 		height: 40px;
 		align-items: center;
@@ -312,8 +330,7 @@ a:ilnk {
 		}
 		
 		
-		
-.listP:hover, .listPb:hover, .listPnew:hover {
+.listP:hover, .listPb:hover, .listPnew:hover, .renbtn:hover {
 	
 		background: #273c75;
 		color: white;

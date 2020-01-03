@@ -1,9 +1,10 @@
-	
+	 /* by grebennikovalex */
+	 
+	 //helper functions file
 	
 	// random X function
-let ra = (cells) => { 
-
-
+	
+const ra = (cells) => { 
 
 let flag = true;
 	
@@ -11,140 +12,138 @@ let flag = true;
 	
 	while (flag) {
 
-		let cell = Math.floor(Math.random() * 9); 
+		let cell = Math.floor(Math.random() * 9)
 		
 				for (let i = 0; i < cells.length; i++) {
 					
-						if (cells[cell].check == " ") {
+						if (cells[cell].check === " ") {
 							
-							putX(cell);
-							[...cells].forEach(cell => cell.delayflag = false);	
-							if (winCheck()) winFill();
-							flag = false;
-						};
-					
-				
-				};
-				
-		};
-		
-	
-};	
+							putX(cell, false)
+							
+							flag = false
+													
+						}
+				}
+		}
+}	
 
-// an X insertion
+	// an X insertion
+	//"bool" is for distingush clear standoff state from "X" winner state on the very last move
 	
-let putX = (cell) => {
+function putX(cell, bool){ 
 	
-							cells[cell].innerHTML = "<img src = 'files/x.png' class = 'xx'>";
-							popsound.play();
-							counter++;
-							nextPlayerField.innerHTML = `${players[cplr].name} MOVE  ${counter + 1}`;
-							console.log(counter);
-							cells[cell].flag = true;
-							cells[cell].check =  "x";
-							cells[cell].num =  1;
-							mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
-							cells[cell].className = "boxchecked";
-							[...cells].forEach(cell => cell.delayflag = false);
-							if (counter == 9) winFill();
-							
-};
+				cells[cell].innerHTML = "<img src = 'files/x.png' class = 'xx'>"
+				popsound.play()
+				counter++
+				nextPlayerField.innerHTML = `${players[cplr].name} MOVE  ${counter + 1}`
+				cells[cell].flag = true
+				cells[cell].check =  "x"
+				cells[cell].num =  1
+				mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
+				cells[cell].className = "boxchecked"
+				cells.map(cell => cell.delayflag = false)
+				if (counter === 9 && !bool) standOff()
+				
+}
+
 
 
     // function for display the winner state of the game board	
 	
-let winFill = () =>	{
+const winFill = (a, b, c) =>	{
 	
 				// adding non-respond state for all the cells
 				
-			[...cells].forEach(cell => cell.flag = true);
-									
-			 
-			mark.className = "redmark";
+			cells.map(cell => cell.flag = true)
+			mark.className = "redmark"
 			
+				//changing color in corresponding cells
 			
-			if (winCheck()) {
+				cells[a].className = "boxwin";
+				cells[b].className = "boxwin";
+				cells[c].className = "boxwin";
 				
-				if (mark.check == "o") { 
-										
-					mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>";
+				
+				if (mark.check === "o") { 
+					winplay()					
+					mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
+					nextPlayerField.innerHTML = "THE WINNER: " + players[cplr].name
+					countfields[4].innerHTML = "O WINS:  " + ++players[cplr].ocounter
 					
-					nextPlayerField.innerHTML = "THE WINNER: " + players[cplr].name;
-					
-					countfields[4].innerHTML = "O WINS:  " + ++players[cplr].ocounter;
-					
-					
-	
 					}
 					
-				else if (mark.check == "x") {
-											
-					mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>";
+				else if (mark.check === "x") {
+					setTimeout(winplay, 500)						
+					mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
+					nextPlayerField.innerHTML = players[cplr].name + "  LOST"
+					countfields[3].innerHTML = "X WINS:  " + ++players[cplr].xcounter
 					
-					nextPlayerField.innerHTML = players[cplr].name + "  LOST";
-															
-					countfields[3].innerHTML = "X WINS:  " + ++players[cplr].xcounter;
+					}
 					
-					};
+					//calculating the time of move
 					
-				setTimeout(winplay, 500);
+				end = Date.now()
+	
+				countfields[1].innerHTML = "SPENT: " + timeMove(end - start)
 				
-				
-				
-				
-				}; 
-				
-			
-									
-			
+				if ((end - start) < players[cplr].record) players[cplr].record = end - start
+				if (mark.check === "o" && (end - start) < players[cplr].recordo) players[cplr].recordo = end - start
 					
-			// checking the standoff state and changing the game board 		
+				countersDisplay()	
+				newgame.flag = true
+				
+				return
+}	
+				
+				
+					
+	// checking the standoff state and changing the game board 		
 										
-			if (!winCheck() && counter == 9) {
-				mark.innerHTML = " ";	
-				nextPlayerField.innerHTML = "STANDOFF";	
-				players[cplr].offcounter++;
-				mark.check = " ";
-				[...cells].forEach(cell => cell.className = "boxoff");
-				setTimeout(offplay, 500);
+const standOff = () => {
+				mark.innerHTML = " "	
+				nextPlayerField.innerHTML = "STANDOFF"
+				players[cplr].offcounter++
+				mark.check = " "
+				cells.map(cell => cell.className = "boxoff")
+				setTimeout(offplay, 500)
 				
+				end = Date.now()
+	
+				countfields[1].innerHTML = "SPENT: " + timeMove(end - start)
 				
+				countersDisplay()	
+				newgame.flag = true
 				
-			};
+				return
+				
+}
 			
-	end = Date.now();
 	
-	countfields[1].innerHTML = "SPENT: " + timeMove(end - start);
-	
-	if ((end - start) < players[cplr].record) players[cplr].record = end - start;
-	if (mark.check == "o" && (end - start) < players[cplr].recordo) players[cplr].recordo = end - start;
-		
-	countersDisplay();
-};
+
 
 	// sound constructor
 	
 function sound(src) {
-	this.sound = document.createElement("audio");
-	this.sound.src = src;
-	this.sound.setAttribute("preload", "auto");
-	this.sound.setAttribute("controls", "none");
-	this.sound.style.display = "none";
-	document.body.appendChild(this.sound);
+	this.sound = document.createElement("audio")
+	this.sound.src = src
+	this.sound.setAttribute("preload", "auto")
+	this.sound.setAttribute("controls", "none")
+	this.sound.style.display = "none"
+	document.body.appendChild(this.sound)
 	this.play = function(){
-    this.sound.play();
+    this.sound.play()
   }
 	this.stop = function(){
-    this.sound.pause();
+    this.sound.pause()
   }
-};
+}
 
 	
-	// functions used for delay	in setTimeout	
+	// setTimeout sound wrappers
 	
-function winplay() {winsound.play()};
-function offplay() {offsound.play()};
-function randomcheck () {ra (cells)};
+function winplay() {winsound.play()}
+function offplay() {offsound.play()}
+
 
 	//checking for doubles in players' names
 
@@ -152,39 +151,38 @@ function uniqueCheck(value) {
 	
 	for (let i = 0; i < players.length; i++) {
 		
-		if (value.toUpperCase() == players[i].name) {
-			alert("Existing name, try another one...");
-			return false;
-		};
+		if (value.toUpperCase() === players[i].name) {
+			alert("Existing name, try another one...")
+			return false
+		}
 				
 		
-	};
-	return true;
-};
+	}
+	return true
+}
+
+	//clock
 
 function timefield() {
 	
-	let time = new Date();
+	let time = new Date()
 	countfields[2].innerHTML = 
-	"TIME:" + (new Date().toLocaleTimeString());
-	if (time - start >= 30000) {
-		
-			
-			
-			};
-	};
+	"TIME:" + (new Date().toLocaleTimeString())
+}
+
+	//time of a game
 
 function timeMove(time) {
 		
-	let minutes = Math.floor((time) / 1000);
-	let seconds = ((time) % 1000).toFixed(0);
-		seconds = (seconds / 10).toFixed(0);
+	let minutes = Math.floor((time) / 1000)
+	let seconds = ((time) % 1000).toFixed(0)
+		seconds = (seconds / 10).toFixed(0)
 	let str = minutes
 		+ ":" 
 		+ (seconds < 10 ? '0' : '') 
 		+ seconds
-		+ "s.";
+		+ "s."
 		
-		return str;
+	return str
 	
-	};
+}
