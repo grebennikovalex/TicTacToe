@@ -6,7 +6,9 @@ function game() {
 	
 mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
 countfields[0].innerHTML = "GAME:  " + ++players[cplr].games
-playerField.innerHTML = "CURRENT PLAYER:  " + "<strong>" + players[cplr].name + "</strong>"
+playerField.innerHTML = "PLAYER:  " + "<strong>" + players[cplr].name + "</strong>" + ": FOOL: "
+playerField.append(checkFool)
+//if(checkFool.checked === true) fool = true
 start = Date.now()
 mark.check = " "
 nextPlayerField.innerHTML = `LOGIC MOVE  ${counter + 1}`

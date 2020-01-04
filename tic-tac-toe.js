@@ -15,6 +15,7 @@ let start, end
 let cplr = ""
 let rem = ""
 let recordo = ""
+//let fool = true
 
 
 	// creating the game board elements and addind initial properties for them
@@ -61,6 +62,12 @@ let playerField = document.createElement('div')
 	playerField.className = "field"
 	playerField.style.width = "296px"
 	headbox.append(playerField)
+	
+let checkFool = document.createElement('input')
+	checkFool.type = 'checkbox'
+	checkFool.className = 'fool'
+	
+
 	
 let playerScore = document.createElement('div')
 	playerScore.className = "field"

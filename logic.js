@@ -136,6 +136,11 @@ function logic() {
 				return
 		}
 		
+		if(checkFool.checked) {
+			ra(cells)
+			return
+		}
+		
 		// checking for "O"
 		
 		// rows
