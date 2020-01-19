@@ -3,18 +3,30 @@
 	// the game itself	
 	
 function game() {
-	
-mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
+
 countfields[0].innerHTML = "GAME:  " + ++players[cplr].games
 playerField.innerHTML = "PLAYER:  " + "<strong>" + players[cplr].name + "</strong>" + ": FOOL: "
 playerField.append(checkFool)
-//if(checkFool.checked === true) fool = true
+
 start = Date.now()
 mark.check = " "
-nextPlayerField.innerHTML = `LOGIC MOVE  ${counter + 1}`
 
 
-ra(cells)
+if(oddgame){
+	
+	mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
+	console.log(oddgame)	
+	ra(cells)
+	oddgame = false
+} 
+
+else if(!oddgame){
+	console.log(oddgame)
+	cells.map(cell => cell.delayflag = false)
+	
+	oddgame = true
+	
+	}
 						
 	// changing the state of clicked cell
 	
@@ -26,7 +38,8 @@ cells.map(cell => {
 					
 				if (!cell.flag && !cell.delayflag)  {		
 					
-							counter++; 
+							counter++
+
 							nextPlayerField.innerHTML = `LOGIC MOVE  ${counter + 1}`	
 								 
 									// placing the O in the corresponding cell
@@ -38,7 +51,7 @@ cells.map(cell => {
 									// changing the state to marked with O
 									cell.check =  "o"
 									
-									//number for logic
+									// number for logic
 									cell.num =  5
 									
 									// the next player is "X"									
@@ -48,7 +61,12 @@ cells.map(cell => {
 									
 									// playing sound
 									popsound.play()
-														
+									
+							if (counter === 9) {
+								standOff()		
+								return
+								}
+								
 							setTimeout(logic, 500)
 							
 								

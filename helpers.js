@@ -42,6 +42,7 @@ function putX(cell, bool){
 				mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
 				cells[cell].className = "boxchecked"
 				cells.map(cell => cell.delayflag = false)
+				console.log(counter)
 				if (counter === 9 && !bool) standOff()
 				
 }

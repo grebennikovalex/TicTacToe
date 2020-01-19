@@ -15,7 +15,7 @@ let start, end
 let cplr = ""
 let rem = ""
 let recordo = ""
-//let fool = true
+let oddgame = true
 
 
 	// creating the game board elements and addind initial properties for them
@@ -241,6 +241,10 @@ newgame.onmousedown = () =>	{
 								
 		board()
 		newgame.flag = false
+		
+		oddgame ? mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>" : mark.innerHTML = "<img src = 'files/o.png' class = 'oo'>"
+		oddgame ? nextPlayerField.innerHTML = `LOGIC MOVE  ${counter + 1}` : nextPlayerField.innerHTML = `${players[cplr].name} MOVE  ${counter + 1}`
+		
 		setTimeout(game, 500)
 	}
 }
@@ -391,6 +395,8 @@ function handle() {
 				startContainer.style.display = "none"
 				board()
 				countersDisplay()
+				nextPlayerField.innerHTML = `LOGIC MOVE  ${counter + 1}`	
+				mark.innerHTML = "<img src = 'files/x.png' class = 'xx'>"
 				setTimeout(game, 500)
 				newgame.flag = false
 				return
